@@ -1,0 +1,31 @@
+[
+  {
+    "name": "name",
+    "regex": "name",
+    "regexFlag": "g", // valid flags are "gimsu"
+    "color": "#0000ff" // ColorName, #RGB, #RGBA, #RRGGBB, #RRGGBBAA
+    // "backgroundColor": "#ff0000", // ColorName, #RGB, #RGBA, #RRGGBB, #RRGGBBAA
+    // "border": "solid thin blue",
+    // "borderColor": "#00ff00", // ColorName, #RGB, #RGBA, #RRGGBB, #RRGGBBAA
+    // "borderRadius": "50px 50px 50px 50px / 50px 50px 50px 50px",
+    // "borderSpacing": "100px",
+    // "borderStyle": "solid", // none, hidden, solid, double, groove, ridge, inset, outset, dashed, dotted
+    // "borderWidth": "1px" // number, thin, medium, thick
+    // "cursor": "crosshair",
+    // "fontStyle": "italic", // normal, italic, oblique
+    // "fontWeight": "400", // normal, bold, lighter, bolder
+    // "gutterIconPath": "C:\\Users\\blues\\Documents\\test.png",
+    // "gutterIconSize": "auto" // auto, contain, cover
+    // "isWholeLine": true, // true, false
+    // "letterSpacing": "10px", // normalr
+    // "opacity": "1.0",
+    // "outline": "solid thick red", //  [none, hidden, solid, double, groove, ridge, inset, outset, dashed, dotted], [number, thin, medium, thick] [color]
+    // "outlineColor": "#0000ff", // ColorName, #RGB, #RGBA, #RRGGBB, #RRGGBBAA
+    // "outlineStyle": "dashed", // none, hidden, solid, double, groove, ridge, inset, outset, dashed, dotted
+    // "outlineWidth": "5px", // number, thin, medium, thick
+    // "overviewRulerColor": "red", // ColorName, #RGB, #RGBA, #RRGGBB, #RRGGBBAA
+    // "overviewRulerLane": 1 // "Center"=2, "Full"=7, "Left"=1, "Right"=4
+    // "rangeBehavior": "ClosedClosed", // "OpenOpen"=0, "ClosedClosed"=1, "OpenClosed"=2, "ClosedOpen"=3
+    // "textDecoration": "underline double red" // [none, underline, overline, blinek] [solid, double, dotted, dashed, wavy] [color]
+  }
+]

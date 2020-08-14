@@ -1,0 +1,16 @@
+[
+  {
+    "name": "test01",
+    "regex": "function",
+    "regelFlag": "g",
+    "color": "#0000ff",
+    "backgroundColor": "#ffff00"
+  },
+  {
+    "name": "test02",
+    "regex": "return",
+    "regelFlag": "g",
+    "color": "#ff0000",
+    "backgroundColor": "#00ffff"
+  }
+]

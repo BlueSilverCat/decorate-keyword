@@ -1,0 +1,58 @@
+[
+  {
+    "name": "test0",
+    "regex": "OpenOpen",
+    "regexFlag": "g",
+    "backgroundColor": "#ff0000",
+    "rangeBehavior": "OpenOpen"
+  },
+  {
+    "name": "test1",
+    "regex": "ClosedClosed",
+    "regexFlag": "g",
+    "backgroundColor": "#ff0000",
+    "rangeBehavior": "ClosedClosed"
+  },
+  {
+    "name": "test2",
+    "regex": "OpenClosed",
+    "regexFlag": "g",
+    "backgroundColor": "#ff0000",
+    "rangeBehavior": "OpenClosed"
+  },
+  {
+    "name": "test3",
+    "regex": "ClosedOpen",
+    "regexFlag": "g",
+    "backgroundColor": "#ff0000",
+    "rangeBehavior": "ClosedOpen"
+  },
+  {
+    "name": "test0",
+    "regex": "OpenOpen",
+    "regexFlag": "g",
+    "backgroundColor": "#ff0000",
+    "rangeBehavior": 0
+  },
+  {
+    "name": "test1",
+    "regex": "ClosedClosed",
+    "regexFlag": "g",
+    "backgroundColor": "#ff0000",
+    "rangeBehavior": 1
+  },
+  {
+    "name": "test2",
+    "regex": "OpenClosed",
+    "regexFlag": "g",
+    "backgroundColor": "#ff0000",
+    "rangeBehavior": 2
+  },
+  {
+    "name": "test3",
+    "regex": "ClosedOpen",
+    "regexFlag": "g",
+    "backgroundColor": "#ff0000",
+    "rangeBehavior": 3
+  }
+]

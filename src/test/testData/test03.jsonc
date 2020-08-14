@@ -1,0 +1,30 @@
+[
+  {
+    "name": "test01",
+    "regex": "\\p{Ll}+",
+    "regexFlag": "gu",
+    "color": "#0000ff",
+    "backgroundColor": "#ffff00"
+  },
+  {
+    "name": "test02",
+    "regex": "\\p{scx=Hani}+", //漢字かんじカンジ
+    "regexFlag": "gu",
+    "color": "#ff0000",
+    "backgroundColor": "#ffffff"
+  },
+  {
+    "name": "test03",
+    "regex": "\\u0041+", //A
+    "regexFlag": "g",
+    "color": "#ff0000",
+    "backgroundColor": "#00ffff"
+  },
+  {
+    "name": "test04",
+    "regex": "\\u{0040}+", //@
+    "regexFlag": "gu",
+    "color": "#ff00ff",
+    "backgroundColor": "#00ffff"
+  }
+]
