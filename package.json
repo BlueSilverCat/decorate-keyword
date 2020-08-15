@@ -81,8 +81,7 @@
     "test": "node ./out/test/runTest.js"
   },
   "dependencies": {
-    "jsonc-parser": "^2.3.0",
-    "vsce": "^1.78.0"
+    "jsonc-parser": "^2.3.0"
   },
   "devDependencies": {
     "@types/vscode": "^1.48.0",
