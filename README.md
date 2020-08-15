@@ -8,6 +8,9 @@ May be useful if:
 - When need background colors.
 - etc.
 
+![undecorate](https://raw.githubusercontent.com/BlueSilverCat/decorate-keyword/image/image/undecorate.png)
+![decorate](https://raw.githubusercontent.com/BlueSilverCat/decorate-keyword/image/image/decorate.png)
+
 ## Features
 
 - Decorate registered keywords.
@@ -24,7 +27,7 @@ May be useful if:
     "name": "function",
     "regex": "\\bfunction\\b",
     "regexFlag": "g",
-    "color": "#0000ff",
+    "color": "#ff00ff",
     "backgroundColor": "#ffff00",
     "isWholeLine": true
   },
@@ -39,15 +42,15 @@ May be useful if:
     "name": "blockComment",
     "regex": "/\\*[\\S\\s]+?\\*/",
     "regexFlag": "g",
-    "color": "black",
-    "backgroundColor": "#00ff0055"
+    "color": "#00ff0055",
+    "backgroundColor": "#ff000055"
   },
   {
     "name": "Japanese",
     "regex": "[\\p{scx=Hira}\\p{scx=Kana}\\p{scx=Han}]+",
     "regexFlag": "gu",
-    "color": "white",
-    "backgroundColor": "cyan",
+    "color": "black",
+    "backgroundColor": "black",
     "border": "solid 1px red"
   }
 ]
