@@ -224,6 +224,7 @@ If no alpha value is defined, it defaults to ff (opaque, no transparency). If al
 | command                     | default keybind | description                                 |
 | :-------------------------- | :-------------- | :------------------------------------------ |
 | decorate-keyword.read       |                 | Read definition from `denifinitinFilePath`. |
+| decorate-keyword.read       |                 | open `denifinitinFilePath`.                 |
 | decorate-keyword.toggle     |                 | Decorate or undecorate keywords.            |
 | decorate-keyword.decorate   |                 | Decorate keywords or Refresh decoration.    |
 | decorate-keyword.undecorate |                 | Undecorate keywords.                        |

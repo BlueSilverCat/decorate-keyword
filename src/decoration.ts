@@ -429,6 +429,11 @@ class DecorateManeger {
     this.decorators[editorIndex].undecorate();
   }
 
+  async opne() {
+    const document = await vscode.workspace.openTextDocument(this.definitionFilePath);
+    const editor = await vscode.window.showTextDocument(document);
+  }
+
   // need fix 全探索なので力任せ
   change(event: vscode.TextDocumentChangeEvent) {
     const editorIndices = this.findFromDocument(event.document);

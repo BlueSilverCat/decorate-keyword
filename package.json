@@ -51,6 +51,11 @@
         "category": "DecorateKeyword"
       },
       {
+        "command": "decorate-keyword.open",
+        "title": "open",
+        "category": "DecorateKeyword"
+      },
+      {
         "command": "decorate-keyword.toggle",
         "title": "toggle",
         "category": "DecorateKeyword"

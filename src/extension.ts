@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import * as vscodeUtil from "./vscodeUtil";
 import { DecorateManeger } from "./decoration";
+import { open } from "fs";
 
 export function activate(context: vscode.ExtensionContext) {
   const dm: DecorateManeger = new DecorateManeger();
@@ -46,7 +47,12 @@ export function activate(context: vscode.ExtensionContext) {
     }
   }
 
+  async function open() {
+    await dm.opne();
+  }
+
   vscodeUtil.registerCommand(context, "decorate-keyword.read", read);
+  vscodeUtil.registerCommand(context, "decorate-keyword.open", open);
   vscodeUtil.registerCommand(context, "decorate-keyword.decorate", decorate);
   vscodeUtil.registerCommand(context, "decorate-keyword.undecorate", undecorate);
   vscodeUtil.registerCommand(context, "decorate-keyword.toggle", toggle);
