@@ -11,7 +11,7 @@
       "request": "launch",
       "runtimeExecutable": "${execPath}",
       "args": [
-        "${workspaceFolder}/src/test/testData",
+        "${workspaceFolder}/",
         "${workspaceFolder}/src/test/testData/test01.jsonc",
         "--extensionDevelopmentPath=${workspaceFolder}"
       ],

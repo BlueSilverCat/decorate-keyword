@@ -1,14 +1,14 @@
 import * as vscode from "vscode";
 import * as vscodeUtil from "./vscodeUtil";
-import { DecorateManeger } from "./decoration";
+import { DecorateManager } from "./decoration";
 import { open } from "fs";
 
 export function activate(context: vscode.ExtensionContext) {
-  const dm: DecorateManeger = new DecorateManeger();
+  const dm: DecorateManager = new DecorateManager();
 
   async function readData() {
     dm.getConfig();
-    const data = await DecorateManeger.read(dm.definitionFilePath);
+    const data = await DecorateManager.read(dm.definitionFilePath);
     dm.setDecorationData(data);
   }
 
@@ -48,7 +48,7 @@ export function activate(context: vscode.ExtensionContext) {
   }
 
   async function open() {
-    await dm.opne();
+    await dm.open();
   }
 
   vscodeUtil.registerCommand(context, "decorate-keyword.read", read);

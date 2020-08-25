@@ -9,6 +9,7 @@ interface DecorationFileData {
   name: string;
   regex: string;
   regexFlag: string;
+  languageId?: string[];
   after?: object;
   before?: object;
   dark?: object;
@@ -43,6 +44,7 @@ interface DecorationFileDataChecked {
   [key: string]: string | RegExp | boolean | number | object | undefined;
   name: string;
   regex: RegExp;
+  languageId: string[];
   after?: object;
   before?: object;
   dark?: object;
@@ -80,11 +82,13 @@ interface DecorationRenderOptions extends vscode.DecorationRenderOptions {
 class DecorationData {
   name: string;
   regex: RegExp;
+  languageId: string[];
   decorationRenderOption: DecorationRenderOptions;
 
   constructor(data: DecorationFileDataChecked) {
     this.name = data.name;
     this.regex = data.regex;
+    this.languageId = data.languageId;
     this.decorationRenderOption = {};
     for (const key of Object.keys(data)) {
       if (key !== "name" && key !== "regex") {
@@ -98,11 +102,13 @@ class DecorationType {
   decorationType: vscode.TextEditorDecorationType;
   regex: RegExp;
   ranges: vscode.Range[];
+  languageId: string[];
 
-  constructor(regex: RegExp, data: vscode.DecorationRenderOptions) {
+  constructor(regex: RegExp, languageId: string[], data: vscode.DecorationRenderOptions) {
     this.decorationType = vscode.window.createTextEditorDecorationType(data);
     this.regex = regex;
     this.ranges = [];
+    this.languageId = languageId;
   }
 
   setRanges(editor: vscode.TextEditor) {
@@ -119,6 +125,10 @@ class DecorationType {
   }
 
   decorate(editor: vscode.TextEditor) {
+    console.log(editor.document.languageId);
+    if (this.languageId.includes("*") === false && this.languageId.includes(editor.document.languageId) === false) {
+      return;
+    }
     this.setRanges(editor);
     editor.setDecorations(this.decorationType, this.ranges);
   }
@@ -145,7 +155,7 @@ class Decorator {
     this.decorateFlag = false;
 
     for (const d of data) {
-      this.decorationTypes.push(new DecorationType(d.regex, d.decorationRenderOption));
+      this.decorationTypes.push(new DecorationType(d.regex, d.languageId, d.decorationRenderOption));
     }
   }
 
@@ -171,7 +181,7 @@ class Decorator {
   }
 }
 
-class DecorateManeger {
+class DecorateManager {
   static readonly ReadMessage = "DecorateKeyword: Loading...";
   static readonly ReadEndMessage = "DecorateKeyword: Finish loading.";
   static readonly MessageTimeOut = 3000;
@@ -231,6 +241,7 @@ class DecorateManeger {
     }
     return true;
   }
+
   static checkOverviewRulerLane(array: any[], index: number) {
     if (array[index].hasOwnProperty("overviewRulerLane") === false) {
       return true;
@@ -290,16 +301,40 @@ class DecorateManeger {
     }
 
     try {
-      array[index].regex = new RegExp(array[index].regex, DecorateManeger.checkFlag(array, index));
+      array[index].regex = new RegExp(array[index].regex, DecorateManager.checkFlag(array, index));
       delete array[index].regexFlag;
     } catch (error) {
-      `${EXTENSION_NAME}: DecorationData[${index}](${array[index].name}) regex is invalid. ${array[index].regex}`;
+      vscode.window.showWarningMessage(
+        `${EXTENSION_NAME}: DecorationData[${index}](${array[index].name}) regex is invalid. ${array[index].regex}`
+      );
       return false;
     }
     return true;
   }
 
-  static checkData(data: any) {
+  static async checkLanguageId(array: any[], index: number) {
+    if (array[index].hasOwnProperty("languageId") === false) {
+      array[index].languageId = ["*"];
+      return true;
+    }
+    const languages = await vscode.languages.getLanguages();
+    console.log(languages);
+    let count = 0;
+    for (const language of array[index].languageId) {
+      if (languages.includes(language.toLowerCase())) {
+        count++;
+      }
+    }
+    if (count === array[index].languageId.length) {
+      return true;
+    }
+    vscode.window.showWarningMessage(
+      `${EXTENSION_NAME}: DecorationData[${index}](${array[index].name}) languageId is invalid. ${array[index].languageId}`
+    );
+    return false;
+  }
+
+  static async checkData(data: any) {
     if (Array.isArray(data) === false) {
       vscode.window.showWarningMessage(`${EXTENSION_NAME}: DecorationData must be Array.`);
       return [];
@@ -312,25 +347,28 @@ class DecorateManeger {
         vscode.window.showWarningMessage(`${EXTENSION_NAME}: DecorationData[${i}] must have name property.`);
         continue;
       }
-      if (DecorateManeger.checkRegex(data, i) === false) {
+      if (DecorateManager.checkRegex(data, i) === false) {
         continue;
       }
-      if (DecorateManeger.checkColor(data, i, "color") === false) {
+      if ((await DecorateManager.checkLanguageId(data, i)) === false) {
         invalidFlag = true;
       }
-      if (DecorateManeger.checkColor(data, i, "backgroundColor") === false) {
+      if (DecorateManager.checkColor(data, i, "color") === false) {
         invalidFlag = true;
       }
-      if (DecorateManeger.checkColor(data, i, "borderColor") === false) {
+      if (DecorateManager.checkColor(data, i, "backgroundColor") === false) {
         invalidFlag = true;
       }
-      if (DecorateManeger.checkColor(data, i, "overviewRulerColor") === false) {
+      if (DecorateManager.checkColor(data, i, "borderColor") === false) {
         invalidFlag = true;
       }
-      if (DecorateManeger.checkRangeBehavior(data, i) === false) {
+      if (DecorateManager.checkColor(data, i, "overviewRulerColor") === false) {
         invalidFlag = true;
       }
-      if (DecorateManeger.checkOverviewRulerLane(data, i) === false) {
+      if (DecorateManager.checkRangeBehavior(data, i) === false) {
+        invalidFlag = true;
+      }
+      if (DecorateManager.checkOverviewRulerLane(data, i) === false) {
         invalidFlag = true;
       }
       if (invalidFlag === false) {
@@ -341,15 +379,15 @@ class DecorateManeger {
   }
 
   static async read(filePath: string): Promise<DecorationFileDataChecked[]> {
-    let statusBar = vscode.window.setStatusBarMessage(DecorateManeger.ReadMessage);
+    let statusBar = vscode.window.setStatusBarMessage(DecorateManager.ReadMessage);
     const text = await util.read(filePath).catch((err) => {
       vscode.window.showWarningMessage(`${EXTENSION_NAME}: ${err}`);
       return "[]";
     });
     let decorationData = util.parseJsonc(text);
-    decorationData = DecorateManeger.checkData(decorationData);
+    decorationData = await DecorateManager.checkData(decorationData);
     statusBar.dispose();
-    vscode.window.setStatusBarMessage(DecorateManeger.ReadEndMessage, DecorateManeger.MessageTimeOut);
+    vscode.window.setStatusBarMessage(DecorateManager.ReadEndMessage, DecorateManager.MessageTimeOut);
     return decorationData;
   }
 
@@ -429,7 +467,7 @@ class DecorateManeger {
     this.decorators[editorIndex].undecorate();
   }
 
-  async opne() {
+  async open() {
     const document = await vscode.workspace.openTextDocument(this.definitionFilePath);
     const editor = await vscode.window.showTextDocument(document);
   }
@@ -488,4 +526,4 @@ class DecorateManeger {
   }
 }
 
-export { DecorationFileData, DecorationFileDataChecked, DecorationType, Decorator, DecorationData, DecorateManeger };
+export { DecorationFileData, DecorationFileDataChecked, DecorationType, Decorator, DecorationData, DecorateManager };
