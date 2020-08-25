@@ -102,13 +102,11 @@ class DecorationType {
   decorationType: vscode.TextEditorDecorationType;
   regex: RegExp;
   ranges: vscode.Range[];
-  languageId: string[];
 
-  constructor(regex: RegExp, languageId: string[], data: vscode.DecorationRenderOptions) {
+  constructor(regex: RegExp, data: vscode.DecorationRenderOptions) {
     this.decorationType = vscode.window.createTextEditorDecorationType(data);
     this.regex = regex;
     this.ranges = [];
-    this.languageId = languageId;
   }
 
   setRanges(editor: vscode.TextEditor) {
@@ -125,10 +123,6 @@ class DecorationType {
   }
 
   decorate(editor: vscode.TextEditor) {
-    console.log(editor.document.languageId);
-    if (this.languageId.includes("*") === false && this.languageId.includes(editor.document.languageId) === false) {
-      return;
-    }
     this.setRanges(editor);
     editor.setDecorations(this.decorationType, this.ranges);
   }
@@ -155,7 +149,9 @@ class Decorator {
     this.decorateFlag = false;
 
     for (const d of data) {
-      this.decorationTypes.push(new DecorationType(d.regex, d.languageId, d.decorationRenderOption));
+      if (d.languageId.includes("*") === true || d.languageId.includes(editor.document.languageId) === true) {
+        this.decorationTypes.push(new DecorationType(d.regex, d.decorationRenderOption));
+      }
     }
   }
 
