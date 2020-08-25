@@ -1,6 +1,6 @@
 # decorate-keyword README
 
-This extension decorate(hightlight) registered keywords.  
+This extension decorate(highlight) registered keywords.  
 May be useful if:
 
 - When using VS code as custom file viewer.
@@ -111,7 +111,7 @@ More detail see [CSS reference](https://developer.mozilla.org/en-US/docs/Web/CSS
   See [CSS values and units](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Values_and_Units)
 - `cursor`: String. See [Cursor](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor)
 - `fontStyle`: String. Available values are "normal", "italic", "oblique", ...
-- `fontWeight`: String. Available value are "nomal", "bold", "lighter", "bolder" ...
+- `fontWeight`: String. Available value are "normal", "bold", "lighter", "bolder" ...
 - `letterSpacing`: String. e.g. "10px".  
   See [CSS values and units](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Values_and_Units)
 - `opacity`: String. Available value are between "0.0" and "1.0".
@@ -119,12 +119,12 @@ More detail see [CSS reference](https://developer.mozilla.org/en-US/docs/Web/CSS
 - `outlineColor`: String. See [Color formats](#Color_formats) for valid values.
 - `outlineStyle`: String. Available value are "none", "hidden", "solid", "double", "groove", "ridge", "inset", "outset", "dashed", "dotted", ...
 - `outlineWidth`: String. Available value are "thin", "medium", "thick" , ...
-- `textDecoration`: String. e.g. "underline double red". "none", "underline", "overline", "blinek". "solid", "double", "dotted", "dashed", "wavy".
+- `textDecoration`: String. e.g. "underline double red". "none", "underline", "overline", "blink". "solid", "double", "dotted", "dashed", "wavy".
 
 * `gutterIconPath`: String. An absolute path to an image to be rendered in the gutter
 * `gutterIconSize`: String. Specifies the size of the gutter icon.  
   Available values are 'auto', 'contain', 'cover' and any percentage value.
-* `isWholeLine`: Boolen. Should the decoration be rendered also on the whitespace after the line text. `true` or `false`
+* `isWholeLine`: Boolean. Should the decoration be rendered also on the whitespace after the line text. `true` or `false`
 * `overviewRulerColor`: String. The color of the decoration in the overview ruler.  
   See [Color formats](#Color_formats) for valid values.
 * `overviewRulerLane`: String or Number. The position in the overview ruler where the decoration should be rendered.  
@@ -157,7 +157,7 @@ Also `after`, `before`, `dark` and `light` will work.
     "gutterIconPath": "",
     "gutterIconSize": "10px",
     "isWholeLine": true, // true, false
-    "letterSpacing": "10px", // normalr
+    "letterSpacing": "10px", // normal
     "opacity": "1.0",
     "outline": "solid thick red", //  [none, hidden, solid, double, groove, ridge, inset, outset, dashed, dotted], [number, thin, medium, thick] [color]
     "outlineColor": "#0000ff", // ColorName, #RGB, #RGBA, #RRGGBB, #RRGGBBAA
@@ -166,7 +166,7 @@ Also `after`, `before`, `dark` and `light` will work.
     "overviewRulerColor": "#ff00ff", // ColorName, #RGB, #RGBA, #RRGGBB, #RRGGBBAA
     "overviewRulerLane": "Center", // "Center"=2, "Full"=7, "Left"=1, "Right"=4
     "rangeBehavior": "ClosedClosed", // "OpenOpen"=0, "ClosedClosed"=1, "OpenClosed"=2, "ClosedOpen"=3
-    "textDecoration": "underline double red" // [none, underline, overline, blinek] [solid, double, dotted, dashed, wavy] [color]
+    "textDecoration": "underline double red" // [none, underline, overline, blink] [solid, double, dotted, dashed, wavy] [color]
   }
 ]
 ```
@@ -221,13 +221,13 @@ If no alpha value is defined, it defaults to ff (opaque, no transparency). If al
 
 ## Commands
 
-| command                     | default keybind | description                                 |
-| :-------------------------- | :-------------- | :------------------------------------------ |
-| decorate-keyword.read       |                 | Read definition from `denifinitinFilePath`. |
-| decorate-keyword.read       |                 | open `denifinitinFilePath`.                 |
-| decorate-keyword.toggle     |                 | Decorate or undecorate keywords.            |
-| decorate-keyword.decorate   |                 | Decorate keywords or Refresh decoration.    |
-| decorate-keyword.undecorate |                 | Undecorate keywords.                        |
+| command                     | default keybind | description                                |
+| :-------------------------- | :-------------- | :----------------------------------------- |
+| decorate-keyword.read       |                 | Read definition from `definitionFilePath`. |
+| decorate-keyword.read       |                 | open `definitionFilePath`.                 |
+| decorate-keyword.toggle     |                 | Decorate or undecorate keywords.           |
+| decorate-keyword.decorate   |                 | Decorate keywords or Refresh decoration.   |
+| decorate-keyword.undecorate |                 | Undecorate keywords.                       |
 
 ## Extension Settings
 
