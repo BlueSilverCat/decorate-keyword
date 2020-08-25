@@ -13,7 +13,8 @@
       "args": [
         "${workspaceFolder}/",
         "${workspaceFolder}/src/test/testData/test01.jsonc",
-        "--extensionDevelopmentPath=${workspaceFolder}"
+        "--extensionDevelopmentPath=${workspaceFolder}",
+        "--disable-extensions"
       ],
       "outFiles": ["${workspaceFolder}/out/**/*.js"],
       "preLaunchTask": "${defaultBuildTask}"
