@@ -42,15 +42,30 @@ async function setConfig(name: string, config: { [key: string]: any }) {
 ////////////////////////////////////////////////////////////////////////////////
 
 /**
- * 
- * @param {number} num 
+ *
+ * @param {number} num
  */
-function getEol(num: number){
+function getEol(num: number) {
   let eol = "\n";
   if (num === vscode.EndOfLine.CRLF) {
     eol = "\r\n";
   }
   return eol;
+}
+
+/**
+ *
+ * @param {vscode.TextDocument} document
+ * @returns {vscode.TextEditor[]}
+ */
+function getEditorFromDocument(document: vscode.TextDocument): vscode.TextEditor[] {
+  const result = [];
+  for (const editor of vscode.window.visibleTextEditors) {
+    if (editor.document.uri === document.uri) {
+      result.push(editor);
+    }
+  }
+  return result;
 }
 
 /**
@@ -137,16 +152,13 @@ function getPositionInfo(position: vscode.Position, separator = "\n") {
 export {
   registerCommand,
   getCommands,
-
   getConfig,
   setConfig,
-
+  getEditorFromDocument,
   vsDeleteLine,
   vsInsertLine,
   vsReplaceLine,
-
   getEditorsInfo,
   getRangeInfo,
   getPositionInfo,
-
 };

@@ -139,32 +139,47 @@ class DecorationType {
 }
 
 class Decorator {
-  editor: vscode.TextEditor;
+  // editorId: string;
+  documentUri: vscode.Uri;
+  languageId: string;
   decorationTypes: DecorationType[];
   decorateFlag: boolean;
 
-  constructor(editor: vscode.TextEditor, data: DecorationData[]) {
-    this.editor = editor;
+  // constructor(editorId: string, documentUri: vscode.Uri, languageId: string, data: DecorationData[]) {
+  constructor(documentUri: vscode.Uri, languageId: string, data: DecorationData[]) {
+    // this.editorId = editorId;
+    this.documentUri = documentUri;
+    this.languageId = languageId;
     this.decorationTypes = [];
     this.decorateFlag = false;
 
     for (const d of data) {
-      if (d.languageId.includes("*") === true || d.languageId.includes(editor.document.languageId) === true) {
+      if (d.languageId.includes("*") === true || d.languageId.includes(languageId) === true) {
         this.decorationTypes.push(new DecorationType(d.regex, d.decorationRenderOption));
       }
     }
   }
 
-  decorate() {
-    for (const decorationType of this.decorationTypes) {
-      decorationType.decorate(this.editor);
+  decorate(editors: vscode.TextEditor[]) {
+    for (const editor of editors) {
+      // if (editor.document.uri !== this.documentUri) {
+      //   continue;
+      // }
+      for (const decorationType of this.decorationTypes) {
+        decorationType.decorate(editor);
+      }
     }
     this.decorateFlag = true;
   }
 
-  undecorate() {
-    for (const decorationType of this.decorationTypes) {
-      decorationType.undecorate(this.editor);
+  undecorate(editors: vscode.TextEditor[]) {
+    for (const editor of editors) {
+      // if (editor.document.uri !== this.documentUri) {
+      //   continue;
+      // }
+      for (const decorationType of this.decorationTypes) {
+        decorationType.undecorate(editor);
+      }
     }
     this.decorateFlag = false;
   }
@@ -401,66 +416,126 @@ class DecorateManager {
     this.disposeAll();
   }
 
-  add(editor: vscode.TextEditor): void {
-    this.decorators.push(new Decorator(editor, this.decorationData));
+  add(document: vscode.TextDocument): void {
+    // const editors = vscodeUtil.getEditorFromDocument(document);
+    // for (const editor of editors) {
+    //   this.decorators.push(new Decorator(editor.document.uri, editor.document.languageId, this.decorationData));
+    // }
+    this.decorators.push(new Decorator(document.uri, document.languageId, this.decorationData));
   }
 
-  delete(editorIndex: number): void {
-    this.decorators[editorIndex].dispose();
-    this.decorators.splice(editorIndex, 1);
+  delete(documentIndex: number): void {
+    this.decorators[documentIndex].dispose();
+    this.decorators.splice(documentIndex, 1);
   }
 
-  find(editor: vscode.TextEditor): number {
-    for (let i = 0; i < this.decorators.length; ++i) {
-      if (this.decorators[i].editor === editor) {
-        return i;
-      }
-    }
-    return -1;
-  }
+  // find(editor: vscode.TextEditor): number {
+  //   console.log(editor);
+  //   console.log(vscodeUtil.getEditorsInfo([editor]));
+  //   for (let i = 0; i < this.decorators.length; ++i) {
+  //     console.log(this.decorators[i].editorId);
+  //     // @ts-ignore
+  //     if (this.decorators[i].editorId === editor.id) {
+  //       return i;
+  //     }
+  //   }
+  //   return -1;
+  // }
 
   /**
    * 複数のEditorが同じTextDocumentを開いている可能性があるので配列を返す。
    * @param {vscode.TextDocument} document
    */
   findFromDocument(document: vscode.TextDocument): number[] {
+    // console.log(document.uri);
     const result = [];
     for (let i = 0; i < this.decorators.length; ++i) {
-      if (this.decorators[i].editor.document === document) {
+      // console.log(this.decorators[i].documentUri);
+      if (this.decorators[i].documentUri === document.uri) {
         result.push(i);
       }
     }
     return result;
   }
 
-  toggle(editor: vscode.TextEditor): void {
-    let editorIndex = this.find(editor);
-    if (editorIndex === -1) {
-      this.add(editor);
-      editorIndex = this.decorators.length - 1;
+  // toggle(editor: vscode.TextEditor): void {
+  toggle(document: vscode.TextDocument): void {
+    let indices = this.findFromDocument(document);
+    if (indices.length === 0) {
+      this.add(document);
+      indices = [this.decorators.length - 1];
     }
-    if (this.decorators[editorIndex].decorateFlag === true) {
-      this.decorators[editorIndex].undecorate();
-    } else {
-      this.decorators[editorIndex].decorate();
+    // let editorIndex = this.find(editor);
+    // if (editorIndex === -1) {
+    //   this.add(editor);
+    //   editorIndex = this.decorators.length - 1;
+    // }
+    const editors = vscodeUtil.getEditorFromDocument(document);
+    for (const i of indices) {
+      if (this.decorators[i].decorateFlag === true) {
+        this.decorators[i].undecorate(editors);
+      } else {
+        this.decorators[i].decorate(editors);
+      }
     }
   }
 
-  decorate(editor: vscode.TextEditor): void {
-    let editorIndex = this.find(editor);
-    if (editorIndex === -1) {
-      this.add(editor);
-      editorIndex = this.decorators.length - 1;
+  // decorate(editor: vscode.TextEditor): void {
+  decorate(document: vscode.TextDocument): void {
+    // let editorIndex = this.find(editor);
+    let indices = this.findFromDocument(document);
+    if (indices.length === 0) {
+      this.add(document);
+      indices = [this.decorators.length - 1];
     }
-    this.decorators[editorIndex].decorate();
+    const editors = vscodeUtil.getEditorFromDocument(document);
+    for (const i of indices) {
+      if (this.decorators[i].decorateFlag === false) {
+        this.decorators[i].decorate(editors);
+      }
+    }
   }
 
-  undecorate(editor: vscode.TextEditor): void {
-    const editorIndex = this.find(editor);
-    if (editorIndex === -1) {
+  // redecorate(editor: vscode.TextEditor): boolean {
+  redecorate(document: vscode.TextDocument): boolean {
+    let indices = this.findFromDocument(document);
+    if (indices.length === 0) {
+      return false;
+    }
+    const editors = vscodeUtil.getEditorFromDocument(document);
+    let ret = false;
+    for (const i of indices) {
+      if (this.decorators[i].decorateFlag === true) {
+        this.decorators[i].undecorate(editors);
+        this.decorators[i].decorate(editors);
+        ret = true;
+      }
+    }
+    return ret;
+
+    // let editorIndex = this.find(editor);
+    // if (editorIndex === -1) {
+    //   return false;
+    // }
+    // if (this.decorators[editorIndex].decorateFlag === true) {
+    //   this.decorators[editorIndex].decorate(editor);
+    //   return true;
+    // }
+    // return false;
+  }
+
+  // undecorate(editor: vscode.TextEditor): void {
+  undecorate(document: vscode.TextDocument): void {
+    let indices = this.findFromDocument(document);
+    if (indices.length === 0) {
       return;
     }
-    this.decorators[editorIndex].undecorate();
+    const editors = vscodeUtil.getEditorFromDocument(document);
+    for (const i of indices) {
+      if (this.decorators[i].decorateFlag === true) {
+        this.decorators[i].undecorate(editors);
+      }
+    }
   }
 
   async open() {
@@ -470,37 +545,33 @@ class DecorateManager {
 
   // need fix 全探索なので力任せ
   change(event: vscode.TextDocumentChangeEvent) {
-    const editorIndices = this.findFromDocument(event.document);
-    if (editorIndices.length === 0) {
+    const indices = this.findFromDocument(event.document);
+    if (indices.length === 0) {
       return;
     }
-    for (const editorIndex of editorIndices) {
-      if (this.decorators[editorIndex].decorateFlag === false && this.autoDecorate === false) {
+    for (const i of indices) {
+      if (this.decorators[i].decorateFlag === false && this.autoDecorate === false) {
         return;
       }
-      this.decorators[editorIndex].undecorate();
-      this.decorators[editorIndex].decorate();
+      const editors = vscodeUtil.getEditorFromDocument(event.document);
+      if (editors.length === 0) {
+        return;
+      }
+      this.decorators[i].undecorate(editors);
+      this.decorators[i].decorate(editors);
     }
   }
 
-  dispose(editors: vscode.TextEditor[]): void {
-    let indices = [];
-
-    for (const editor of editors) {
-      const editorIndex = this.find(editor);
-      if (editorIndex !== -1) {
-        indices.push(editorIndex);
-      }
+  dispose(document: vscode.TextDocument): void {
+    const indices = this.findFromDocument(document);
+    if (indices.length === 0) {
+      return;
     }
-    const work = [];
-    for (let i = 0; i < this.decorators.length; ++i) {
-      if (indices.includes(i) === true) {
-        work.push(this.decorators[i]);
-      } else {
-        this.decorators[i].dispose();
-      }
+    indices.sort();
+    let deleteCount = 0;
+    for (const i of indices) {
+      this.delete(i - deleteCount++);
     }
-    this.decorators = work;
   }
 
   disposeAll(): void {
@@ -511,10 +582,13 @@ class DecorateManager {
   }
 
   info(sep = "\n") {
-    let result = "";
+    let result = `decorators.length=${this.decorators.length}${sep}`;
     for (const decorator of this.decorators) {
-      result += `${decorator.decorateFlag}, `;
-      result += vscodeUtil.getEditorsInfo([decorator.editor]) + sep;
+      result += `decorator.decorateFlag=${decorator.decorateFlag}${sep}`;
+      // result += `${decorator.editorId}${sep}`;
+      result += `decorator.languageId=${decorator.languageId}${sep}`;
+      result += `decorator.documentUri=${decorator.documentUri}${sep}`;
+      result += `decorator.decorationTypes.length=${decorator.decorationTypes.length}${sep}`;
     }
     const re = new RegExp(`${sep}$`);
     result = result.replace(re, "");

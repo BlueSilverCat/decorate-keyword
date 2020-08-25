@@ -17,8 +17,8 @@ export function activate(context: vscode.ExtensionContext) {
     if (typeof editor === "undefined") {
       return;
     }
-    dm.undecorate(editor);
-    dm.decorate(editor);
+    dm.undecorate(editor.document);
+    dm.decorate(editor.document);
   }
 
   function undecorate() {
@@ -26,7 +26,7 @@ export function activate(context: vscode.ExtensionContext) {
     if (typeof editor === "undefined") {
       return;
     }
-    dm.undecorate(editor);
+    dm.undecorate(editor.document);
   }
 
   function toggle() {
@@ -34,15 +34,15 @@ export function activate(context: vscode.ExtensionContext) {
     if (typeof editor === "undefined") {
       return;
     }
-    dm.toggle(editor);
+    dm.toggle(editor.document);
   }
 
   async function read() {
     await readData();
     if (dm.autoDecorate === true) {
       for (const editor of vscode.window.visibleTextEditors) {
-        dm.undecorate(editor);
-        dm.decorate(editor);
+        dm.undecorate(editor.document);
+        dm.decorate(editor.document);
       }
     }
   }
@@ -56,6 +56,9 @@ export function activate(context: vscode.ExtensionContext) {
   vscodeUtil.registerCommand(context, "decorate-keyword.decorate", decorate);
   vscodeUtil.registerCommand(context, "decorate-keyword.undecorate", undecorate);
   vscodeUtil.registerCommand(context, "decorate-keyword.toggle", toggle);
+  vscodeUtil.registerCommand(context, "decorate-keyword.info", () => {
+    console.log(dm.info());
+  });
 
   vscode.workspace.onDidChangeConfiguration(
     (event) => {
@@ -67,41 +70,62 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions
   );
 
-  // vscode.window.onDidChangeActiveTextEditor(
+  // vscode.window.onDidChangeActiveTextEditor( // editorを分割した場合、切り替わる毎に呼ばれるのでこれは使わない
   //   (editor) => {
-  //     if (dm.autoDecorate === false || typeof editor === "undefined") {
-  //       return;
-  //     }
-  //     dm.decorate(editor);
   //   },
   //   null,
   //   context.subscriptions
   // );
 
+  // vscode.workspace.onDidOpenTextDocument
+
+  vscode.workspace.onDidCloseTextDocument(
+    (document) => {
+      dm.dispose(document);
+    },
+    null,
+    context.subscriptions
+  );
+
   vscode.window.onDidChangeVisibleTextEditors(
     (editors) => {
-      dm.dispose(editors);
-      if (dm.autoDecorate === false) {
+      if (editors.length === 0) {
         return;
       }
       for (const editor of editors) {
-        dm.decorate(editor);
+        const redecorate = dm.redecorate(editor.document);
+        if (redecorate === false && dm.autoDecorate === true) {
+          dm.undecorate(editor.document);
+          dm.decorate(editor.document);
+        }
       }
     },
     null,
     context.subscriptions
   );
 
-  vscode.workspace.onDidChangeTextDocument(
-    (event) => {
-      if (dm.autoDecorate === false) {
-        return;
+  vscode.workspace.onDidSaveTextDocument(
+    (document) => {
+      const redecorate = dm.redecorate(document);
+      if (redecorate === false && dm.autoDecorate === true) {
+        dm.undecorate(document);
+        dm.decorate(document);
       }
-      dm.change(event);
     },
     null,
     context.subscriptions
   );
+
+  // vscode.workspace.onDidChangeTextDocument(
+  //   (event) => {
+  //     if (dm.autoDecorate === false) {
+  //       return;
+  //     }
+  //     dm.change(event);
+  //   },
+  //   null,
+  //   context.subscriptions
+  // );
 
   read();
 }
