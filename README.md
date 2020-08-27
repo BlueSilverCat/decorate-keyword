@@ -42,6 +42,7 @@ May be useful if:
     "name": "blockComment",
     "regex": "/\\*[\\S\\s]+?\\*/",
     "regexFlag": "g",
+    "languageId": ["javascript", "typescript"],
     "color": "#00ff0055",
     "backgroundColor": "#ff000055"
   },
@@ -69,6 +70,7 @@ But you change the contents of `definitionFilePath`, you need to use `DecorateKe
     "name": "Important Keywords",
     "regex": "\\b[Rr]ed[Cc]at\\b",
     "regexFlag": "g",
+    "languageId": ["javascript", "typescript"],
     "color": "red",
     "backgroundColor": "black"
   }
@@ -93,7 +95,7 @@ The objects require properties as below.
 
 The objects can also have properties as below.
 
-These properties represent:  
+The following properties represent:  
 CSS styling property that will be applied to text enclosed by a decoration.  
 More detail see [CSS reference](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference)
 
@@ -121,15 +123,27 @@ More detail see [CSS reference](https://developer.mozilla.org/en-US/docs/Web/CSS
 - `outlineWidth`: String. Available value are "thin", "medium", "thick" , ...
 - `textDecoration`: String. e.g. "underline double red". "none", "underline", "overline", "blink". "solid", "double", "dotted", "dashed", "wavy".
 
-* `gutterIconPath`: String. An absolute path to an image to be rendered in the gutter
-* `gutterIconSize`: String. Specifies the size of the gutter icon.  
+Other properties:
+
+- `languageId`: String\[\]. If you set this property, only decorates specified languages(file extension).  
+  If you not set this property, All languages are targeted.  
+  If you want to explicitly specify all languages, set this property to `["*"]`.  
+  If you want to check the valid values, use `decorate-keyword.showLanguageIds` command.
+  e.g. `"languageId": ["javascript", "typescript"]`
+
+- `gutterIconPath`: String. An absolute path to an image to be rendered in the gutter
+
+- `gutterIconSize`: String. Specifies the size of the gutter icon.  
   Available values are 'auto', 'contain', 'cover' and any percentage value.
-* `isWholeLine`: Boolean. Should the decoration be rendered also on the whitespace after the line text. `true` or `false`
-* `overviewRulerColor`: String. The color of the decoration in the overview ruler.  
+
+- `isWholeLine`: Boolean. Should the decoration be rendered also on the whitespace after the line text. `true` or `false`
+
+- `overviewRulerColor`: String. The color of the decoration in the overview ruler.  
   See [Color formats](#Color_formats) for valid values.
-* `overviewRulerLane`: String or Number. The position in the overview ruler where the decoration should be rendered.  
+
+- `overviewRulerLane`: String or Number. The position in the overview ruler where the decoration should be rendered.  
   Available value are "Center", 2, "Full", 7, "Left", 1, "Right", 4.
-* `rangeBehavior`: String or Number. Customize the growing behavior of the decoration when edits occur at the edges of the decoration's range.  
+- `rangeBehavior`: String or Number. Customize the growing behavior of the decoration when edits occur at the edges of the decoration's range.  
   Available value are "OpenOpen", 0, "ClosedClosed", 1, "OpenClosed", 2, "ClosedOpen", 3.
 
 More detail see [vscode-api#DecorationRenderOption](https://code.visualstudio.com/api/references/vscode-api#DecorationRenderOptions)  
@@ -143,6 +157,7 @@ Also `after`, `before`, `dark` and `light` will work.
     "name": "name",
     "regex": "name",
     "regexFlag": "g", // valid flags are "gimsu"
+    "languageId": ["*"],
     "color": "#0000ff", // ColorName, #RGB, #RGBA, #RRGGBB, #RRGGBBAA
     "backgroundColor": "#ff0000", // ColorName, #RGB, #RGBA, #RRGGBB, #RRGGBBAA
     "border": "solid thin blue",
@@ -173,7 +188,7 @@ Also `after`, `before`, `dark` and `light` will work.
 
 ### About backslash
 
-Backslash must be escaped.
+Backslash must be escaped.  
 If you want to specify the backslash itself, you specify as below.
 
 ```
@@ -186,7 +201,7 @@ If you want to specify the regular expressions special characters(e.g. any digit
 \\d
 ```
 
-From the above if you want to specify a regular expression like `\\\d+\\`, you specify as below.
+From the above if you want to specify a regular expression like `\\\d+\\`, you specify as below.  
 Matching strings are like this \12345\
 
 ```jsonc
@@ -221,13 +236,14 @@ If no alpha value is defined, it defaults to ff (opaque, no transparency). If al
 
 ## Commands
 
-| command                     | default keybind | description                                |
-| :-------------------------- | :-------------- | :----------------------------------------- |
-| decorate-keyword.read       |                 | Read definition from `definitionFilePath`. |
-| decorate-keyword.read       |                 | open `definitionFilePath`.                 |
-| decorate-keyword.toggle     |                 | Decorate or undecorate keywords.           |
-| decorate-keyword.decorate   |                 | Decorate keywords or Refresh decoration.   |
-| decorate-keyword.undecorate |                 | Undecorate keywords.                       |
+| command                          | default keybind | description                                |
+| :------------------------------- | :-------------- | :----------------------------------------- |
+| decorate-keyword.read            |                 | Read definition from `definitionFilePath`. |
+| decorate-keyword.open            |                 | Open `definitionFilePath`.                 |
+| decorate-keyword.toggle          |                 | Decorate or undecorate keywords.           |
+| decorate-keyword.decorate        |                 | Decorate keywords or Refresh decoration.   |
+| decorate-keyword.undecorate      |                 | Undecorate keywords.                       |
+| decorate-keyword.showLanguageIds |                 | Show valid language Ids.                   |
 
 ## Extension Settings
 
@@ -235,6 +251,6 @@ If no alpha value is defined, it defaults to ff (opaque, no transparency). If al
   // definition file path
   "decorateKeyword.definitionFilePath": "filePath" ,
 
-  // Not recommend. Auto decorate keywords. May uses high cpu resource.
+  // decorate when document is opened or saved.
   "decorateKeyword.autoDecorate": false,
 ```
