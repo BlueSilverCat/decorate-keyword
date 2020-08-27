@@ -420,10 +420,8 @@ class DecorateManager {
    * @param {vscode.TextDocument} document
    */
   findFromDocument(document: vscode.TextDocument): number[] {
-    // console.log(document.uri);
     const result = [];
     for (let i = 0; i < this.decorators.length; ++i) {
-      // console.log(this.decorators[i].documentUri);
       if (this.decorators[i].documentUri === document.uri) {
         result.push(i);
       }
