@@ -4,7 +4,7 @@
   "description": "Decorate registered keywords",
   "publisher": "BlueSilverCat",
   "license": "MIT",
-  "version": "0.0.1",
+  "version": "0.1.1",
   "engines": {
     "vscode": "^1.48.0"
   },
@@ -17,6 +17,13 @@
     "keyword",
     "viewer"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BlueSilverCat/decorate-keyword.git"
+  },
+  "bugs": {
+    "url": "https://github.com/BlueSilverCat/decorate-keyword/issues"
+  },
   "activationEvents": [
     "onStartupFinished"
   ],
@@ -44,6 +51,11 @@
         "category": "DecorateKeyword"
       },
       {
+        "command": "decorate-keyword.open",
+        "title": "open",
+        "category": "DecorateKeyword"
+      },
+      {
         "command": "decorate-keyword.toggle",
         "title": "toggle",
         "category": "DecorateKeyword"
@@ -56,6 +68,11 @@
       {
         "command": "decorate-keyword.undecorate",
         "title": "undecorate",
+        "category": "DecorateKeyword"
+      },
+      {
+        "command": "decorate-keyword.info",
+        "title": "info",
         "category": "DecorateKeyword"
       }
     ]
