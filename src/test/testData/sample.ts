@@ -13,3 +13,5 @@ function hoge(x: number): number {
 function hage(x: number): number {
   return x + x;
 }
+
+// comment

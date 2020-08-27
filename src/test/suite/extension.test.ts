@@ -9,12 +9,13 @@ const CONFIGS = ["definitionFilePath", "autoDecorate"];
 const COMMAND_PREFIX = "decorate-keyword";
 const COMMANDS = [
   "decorate-keyword.read",
+  "decorate-keyword.open",
   "decorate-keyword.decorate",
   "decorate-keyword.undecorate",
   "decorate-keyword.toggle",
 ];
 
-const CONFIG_AUTO_On = {
+const CONFIG_AUTO_ON = {
   autoDecorate: true,
 };
 
@@ -72,17 +73,17 @@ describe("Extension Test Suite", () => {
     it("toggle", async function () {
       this.timeout(0);
       await vscode.commands.executeCommand("decorate-keyword.toggle");
-      let input = await vscode.window.showInputBox({ prompt: "toggle" });
+      let input = await vscode.window.showInputBox({ prompt: "toggle(on)" });
       assert.strictEqual(input, "ok");
       await vscode.commands.executeCommand("decorate-keyword.toggle");
-      input = await vscode.window.showInputBox({ prompt: "toggle" });
+      input = await vscode.window.showInputBox({ prompt: "toggle(off)" });
       assert.strictEqual(input, "ok");
     });
 
     it("read", async function () {
       this.timeout(0);
       await vscode.commands.executeCommand("decorate-keyword.undecorate");
-      await setConfig(NAME, CONFIG_AUTO_On);
+      await setConfig(NAME, CONFIG_AUTO_ON);
       await vscode.commands.executeCommand("decorate-keyword.read");
       let input = await vscode.window.showInputBox({ prompt: "read: autoDecorate=true" });
       assert.strictEqual(input, "ok");
@@ -95,32 +96,38 @@ describe("Extension Test Suite", () => {
     it("split editor", async function () {
       this.timeout(0);
       await vscode.commands.executeCommand("decorate-keyword.toggle");
+      let input = await vscode.window.showInputBox({ prompt: "toggle(on)" });
+      assert.strictEqual(input, "ok");
       await vscode.commands.executeCommand("workbench.action.splitEditor");
-      await vscode.commands.executeCommand("decorate-keyword.toggle");
-      let input = await vscode.window.showInputBox({ prompt: "split editor: toggle(on)" });
+      input = await vscode.window.showInputBox({ prompt: "split auto decorate" });
       assert.strictEqual(input, "ok");
       await vscode.commands.executeCommand("decorate-keyword.toggle");
-      input = await vscode.window.showInputBox({ prompt: "split editor: toggle(off)" });
+      input = await vscode.window.showInputBox({ prompt: "both toggle(off)" });
+      assert.strictEqual(input, "ok");
+      await vscode.commands.executeCommand("decorate-keyword.toggle");
+      input = await vscode.window.showInputBox({ prompt: "both toggle(on)" });
       assert.strictEqual(input, "ok");
       await vscode.commands.executeCommand("workbench.action.closeActiveEditor");
       await vscode.commands.executeCommand("decorate-keyword.toggle");
-      input = await vscode.window.showInputBox({ prompt: "split editor: toggle(off)" });
+      input = await vscode.window.showInputBox({ prompt: "toggle(off)" });
       assert.strictEqual(input, "ok");
     });
 
     it("split editor auto", async function () {
       this.timeout(0);
-      await setConfig(NAME, CONFIG_AUTO_On);
+      await setConfig(NAME, CONFIG_AUTO_ON);
       await vscode.commands.executeCommand("decorate-keyword.read");
       await vscode.commands.executeCommand("workbench.action.splitEditor");
-      let input = await vscode.window.showInputBox({ prompt: "split editor" });
+      let input = await vscode.window.showInputBox({ prompt: "auto decorate" });
       assert.strictEqual(input, "ok");
       await vscode.commands.executeCommand("decorate-keyword.toggle");
-      input = await vscode.window.showInputBox({ prompt: "split editor: toggle(off)" });
+      input = await vscode.window.showInputBox({ prompt: "toggle(off)" });
       assert.strictEqual(input, "ok");
       await vscode.commands.executeCommand("workbench.action.closeActiveEditor");
+      input = await vscode.window.showInputBox({ prompt: "keep decorate" });
+      assert.strictEqual(input, "ok");
       await vscode.commands.executeCommand("decorate-keyword.toggle");
-      input = await vscode.window.showInputBox({ prompt: "split editor: toggle(off)" });
+      input = await vscode.window.showInputBox({ prompt: "toggle(on)" });
       assert.strictEqual(input, "ok");
       await setConfig(NAME, CONFIG_AUTO_OFF);
     });
