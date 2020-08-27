@@ -1,9 +1,9 @@
 import * as vscode from "vscode";
 import * as vscodeUtil from "./vscodeUtil";
 import { DecorateManager } from "./decoration";
-import { open } from "fs";
 
 export function activate(context: vscode.ExtensionContext) {
+  const channel = vscode.window.createOutputChannel("DecorateKeyword");
   const dm: DecorateManager = new DecorateManager();
 
   async function readData() {
@@ -48,11 +48,20 @@ export function activate(context: vscode.ExtensionContext) {
     await dm.open();
   }
 
+  async function showLanguageIds() {
+    const languages = await vscode.languages.getLanguages();
+    for (const language of languages) {
+      channel.appendLine(language);
+    }
+    channel.show();
+  }
+
   vscodeUtil.registerCommand(context, "decorate-keyword.read", read);
   vscodeUtil.registerCommand(context, "decorate-keyword.open", open);
   vscodeUtil.registerCommand(context, "decorate-keyword.decorate", decorate);
   vscodeUtil.registerCommand(context, "decorate-keyword.undecorate", undecorate);
   vscodeUtil.registerCommand(context, "decorate-keyword.toggle", toggle);
+  vscodeUtil.registerCommand(context, "decorate-keyword.showLanguageIds", showLanguageIds);
   // vscodeUtil.registerCommand(context, "decorate-keyword.info", () => {
   //   console.log(dm.info());
   // });

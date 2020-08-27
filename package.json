@@ -40,7 +40,7 @@
         "decorateKeyword.autoDecorate": {
           "type": "boolean",
           "default": false,
-          "description": "Automatically decorate keywords."
+          "description": "Decorate when document is opened or saved."
         }
       }
     },
@@ -71,8 +71,8 @@
         "category": "DecorateKeyword"
       },
       {
-        "command": "decorate-keyword.info",
-        "title": "info",
+        "command": "decorate-keyword.showLanguageIds",
+        "title": "showLanguageIds",
         "category": "DecorateKeyword"
       }
     ]
