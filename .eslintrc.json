@@ -7,7 +7,14 @@
   },
   "plugins": ["@typescript-eslint"],
   "rules": {
-    "@typescript-eslint/class-name-casing": "warn",
+    "@typescript-eslint/naming-convention": [
+      "warn",
+      {
+        "selector": "classProperty",
+        "modifiers": ["static", "readonly"],
+        "format": ["PascalCase"]
+      }
+    ],
     "@typescript-eslint/semi": "warn",
     "curly": "warn",
     "eqeqeq": "warn",

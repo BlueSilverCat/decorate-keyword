@@ -60,7 +60,7 @@ function uniqueFilter(e: any, i: number, arr: any[]) {
 
 /**
  * 正しい色指定かどうか
- * @param {string} string #RGB, #RGBA, #RRGGBB, #RRGGBBAA, colorName
+ * @param {string} string #RGB, #RGBA, #RRGGBB, #RRGGBBAA, colorName //cspell:disable-line
  */
 function isColor(string: string): boolean {
   string = string.toLowerCase();

@@ -5,6 +5,11 @@
 ### [Added]
 
 - Add languageId
+- Add showLanguageIds command
+
+### [Changed]
+
+- Decoration behavior
 
 ## [0.1.1] 2020/08/15
 
