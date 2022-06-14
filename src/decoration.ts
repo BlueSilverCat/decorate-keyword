@@ -277,7 +277,7 @@ class DecorateManager {
 
   static checkFlag(array: any[], index: number) {
     let result = array[index].regexFlag;
-    const re1 = /[^gimsu]+/g;
+    const re1 = /[^gimsu]+/g; //cspell: disable-line
     const re2 = /g/;
     if (re1.test(result) === true) {
       vscode.window.showWarningMessage(
