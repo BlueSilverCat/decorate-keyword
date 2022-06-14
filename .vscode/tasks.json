@@ -13,6 +13,14 @@
         "kind": "build",
         "isDefault": true
       }
+    },
+    {
+      "type": "npm",
+      "script": "pretest",
+      "problemMatcher": ["$tsc-watch"],
+      "label": "npm: pretest",
+      "detail": "npm run compile && npm run lint",
+      "isBackground": true
     }
   ]
 }

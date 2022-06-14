@@ -96,10 +96,10 @@ const TEST05 = [
     name: "name",
     regex: /name/g,
     languageId: ["*"],
-    color: "#0000ff", // ColorName, #RGB, #RGBA, #RRGGBB, #RRGGBBAA
-    backgroundColor: "#ff0000", // ColorName, #RGB, #RGBA, #RRGGBB, #RRGGBBAA
+    color: "#0000ff", // ColorName, #RGB, #RGBA, #RRGGBB, #RRGGBBAA //cSpell: disable-line
+    backgroundColor: "#ff0000", // ColorName, #RGB, #RGBA, #RRGGBB, #RRGGBBAA //cSpell: disable-line
     border: "solid thin blue",
-    borderColor: "#00ff00", // ColorName, #RGB, #RGBA, #RRGGBB, #RRGGBBAA
+    borderColor: "#00ff00", // ColorName, #RGB, #RGBA, #RRGGBB, #RRGGBBAA //cSpell: disable-line
     borderRadius: "50px 50px 50px 50px / 50px 50px 50px 50px",
     borderSpacing: "100px",
     borderStyle: "solid", // none, hidden, solid, double, groove, ridge, inset, outset, dashed, dotted
@@ -107,16 +107,16 @@ const TEST05 = [
     cursor: "crosshair",
     fontStyle: "italic", // normal, italic, oblique
     fontWeight: "400", // normal, bold, lighter, bolder
-    gutterIconPath: "C:\\Users\\blues\\Documents\\test.png",
+    gutterIconPath: ".\\testData\\sample-blue-100x75.png",
     gutterIconSize: "auto",
     isWholeLine: true, // true, false
     letterSpacing: "10px", // normal
     opacity: "1.0",
     outline: "solid thick red", //  [none, hidden, solid, double, groove, ridge, inset, outset, dashed, dotted], [number, thin, medium, thick] [color]
-    outlineColor: "#0000ff", // ColorName, #RGB, #RGBA, #RRGGBB, #RRGGBBAA
+    outlineColor: "#0000ff", // ColorName, #RGB, #RGBA, #RRGGBB, #RRGGBBAA //cSpell: disable-line
     outlineStyle: "dashed", // none, hidden, solid, double, groove, ridge, inset, outset, dashed, dotted
     outlineWidth: "5px", // number, thin, medium, thick
-    overviewRulerColor: "red", // ColorName, #RGB, #RGBA, #RRGGBB, #RRGGBBAA
+    overviewRulerColor: "red", // ColorName, #RGB, #RGBA, #RRGGBB, #RRGGBBAA //cSpell: disable-line
     overviewRulerLane: 1,
     rangeBehavior: 1, // "ClosedClosed", "ClosedOpen", "OpenClosed", "OpenOpen"
     textDecoration: "underline double red", // [none, underline, overline, blink] [solid, double, dotted, dashed, wavy] [color]
@@ -349,7 +349,7 @@ describe("decoration Test Suite", () => {
         assert.strictEqual(actual, true);
         actual = DecorateManager.checkColor(data, 0, "backgroundColor");
         assert.strictEqual(actual, true);
-        actual = DecorateManager.checkColor(data, 0, "caaat"); // 無い場合はtrueを返す
+        actual = DecorateManager.checkColor(data, 0, "caaat"); // 無い場合はtrueを返す //cSpell: disable-line
         assert.strictEqual(actual, true);
 
         actual = DecorateManager.checkColor(data, 1, "color");
@@ -455,12 +455,12 @@ describe("decoration Test Suite", () => {
       it("test", function () {
         const data = [
           { regexFlag: "g" },
-          { regexFlag: "gimsu" },
+          { regexFlag: "gimsu" }, //cSpell: disable-line
           { regexFlag: "gimsuy" },
           { regexFlag: "cat" },
           { regexFlag: "" },
         ];
-        const checked = ["g", "gimsu", "gimsu", "g", "g"];
+        const checked = ["g", "gimsu", "gimsu", "g", "g"]; //cSpell: disable-line
         assert.strictEqual(DecorateManager.checkFlag(data, 0), checked[0]);
         assert.strictEqual(DecorateManager.checkFlag(data, 1), checked[1]);
         assert.strictEqual(DecorateManager.checkFlag(data, 2), checked[2]);

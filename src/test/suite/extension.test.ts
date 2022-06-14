@@ -13,6 +13,7 @@ const COMMANDS = [
   "decorate-keyword.decorate",
   "decorate-keyword.undecorate",
   "decorate-keyword.toggle",
+  "decorate-keyword.showLanguageIds",
 ];
 
 const CONFIG_AUTO_ON = {

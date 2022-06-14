@@ -14,7 +14,7 @@
     "cursor": "crosshair",
     "fontStyle": "italic", // normal, italic, oblique
     "fontWeight": "400", // normal, bold, lighter, bolder
-    "gutterIconPath": "C:\\Users\\blues\\Documents\\test.png",
+    "gutterIconPath": ".\\testData\\sample-blue-100x75.png",
     "gutterIconSize": "auto", // auto, contain, cover
     "isWholeLine": true, // true, false
     "letterSpacing": "10px", // normal
